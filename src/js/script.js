@@ -60,7 +60,10 @@
       thisProduct.data = data;
 
       thisProduct.renderInMenu();
+      thisProduct.getElements();
       thisProduct.initAccordion();
+      thisProduct.initOrderForm();
+      thisProduct.processOrder();
 
       console.log('new Product: ', thisProduct);
     }
@@ -73,12 +76,21 @@
       menuContainer.appendChild(thisProduct.element);
     }
 
+    getElements(){
+      const thisProduct = this;
+    
+      thisProduct.accordionTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
+      thisProduct.form = thisProduct.element.querySelector(select.menuProduct.form);
+      thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
+      thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
+      thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
+    }
+
     initAccordion() {
       const thisProduct = this;
       /* find the clickable trigger (the element that should react to clicking) */
-      const clicableTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
       /* START: click event listener to trigger */
-      clicableTrigger.addEventListener('click', function (event) {
+      thisProduct.accordionTrigger.addEventListener('click', function (event) {
         /* prevent default action for event */
         event.preventDefault();
 
@@ -101,6 +113,84 @@
         /* END LOOP: for each active product */
       });
       /* END: click event listener to trigger */
+    }
+
+    initOrderForm() {
+      const thisProduct = this;
+      thisProduct.form.addEventListener('submit', function(event){
+        event.preventDefault();
+        thisProduct.processOrder();
+      });
+      
+      for(let input of thisProduct.formInputs){
+        input.addEventListener('change', function(){
+          thisProduct.processOrder();
+        });
+      }
+      
+      thisProduct.cartButton.addEventListener('click', function(event){
+        event.preventDefault();
+        thisProduct.processOrder();
+      });
+    }
+
+    processOrder() {
+      const thisProduct = this;
+
+      // Data checked by user
+      const formData = utils.serializeFormToObject(thisProduct.form);
+
+      // Object containing potential options 
+      const data = thisProduct.data;
+
+      // Default price
+      const defaultPrice = thisProduct.data.price;
+
+      // On the very beginning we assume that price is default 
+      let total = defaultPrice;
+
+      // Option categories
+      const categories = data.params;
+      
+      for(const categoryName in categories) {
+        // Options possible per category 
+        const options = categories[categoryName].options;  
+        // Options checked for specific category
+        const checkedForCategory = formData[categoryName];
+
+        // Go throught options and calculate price based on them
+        for(const optionName in options) {
+          const option = options[optionName];
+
+          // If option is in the array of checked options, then it's checked
+          // If not then indexOf is returning -1
+          const optionChecked = checkedForCategory.indexOf(optionName) !== -1;
+
+          if (optionChecked) {
+            // If option is checked, but it's not default, then we increase total price
+            if (!option.default) {
+              total += option.price;
+            }
+          } else {
+            // If option is not checked and it's default, then we decrase total price
+            // Because total price is based on default value
+            // Default value is containing default options in price
+            if (option.default) {
+              total -= option.price;
+            }
+          }
+        }
+      }
+
+
+      // We need to acquire number value from string amount of products, because we get string value 
+      // IDK why, but amount is an array, that's why we need to get the first and the only one value 
+      const amount = Number.parseInt(formData.amount[0])
+
+      // Afterwards we multiply total price by the number of product ordered
+      thisProduct.priceElem.innerHTML = total * amount;
+      console.log('Product price: ' + total);
+
     }
   }
 
