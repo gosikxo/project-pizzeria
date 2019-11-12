@@ -139,7 +139,7 @@
 
       // Data checked by user
       const formData = utils.serializeFormToObject(thisProduct.form);
-
+      
       // Object containing potential options 
       const data = thisProduct.data;
 
@@ -164,7 +164,7 @@
 
           // If option is in the array of checked options, then it's checked
           // If not then indexOf is returning -1
-          const optionChecked = checkedForCategory.indexOf(optionName) !== -1;
+          const optionChecked = typeof checkedForCategory !== 'undefined' && checkedForCategory.indexOf(optionName) !== -1;
 
           if (optionChecked) {
             // If option is checked, but it's not default, then we increase total price
