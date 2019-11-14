@@ -84,6 +84,7 @@
       thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
       thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
+      thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
     }
 
     initAccordion() {
@@ -165,13 +166,23 @@
           // If option is in the array of checked options, then it's checked
           // If not then indexOf is returning -1
           const optionChecked = typeof checkedForCategory !== 'undefined' && checkedForCategory.indexOf(optionName) !== -1;
+          const imageWrapper = thisProduct.element.querySelector(`img.${categoryName}-${optionName}`);
 
           if (optionChecked) {
+            // if image wrapper was found 
+            if (imageWrapper) {
+              // then add class active to this image 
+              imageWrapper.classList.add(classNames.menuProduct.imageVisible);
+            }
+            
             // If option is checked, but it's not default, then we increase total price
             if (!option.default) {
               total += option.price;
             }
           } else {
+            if (imageWrapper) {
+              imageWrapper.classList.remove(classNames.menuProduct.imageVisible);
+            }
             // If option is not checked and it's default, then we decrase total price
             // Because total price is based on default value
             // Default value is containing default options in price
@@ -185,7 +196,7 @@
 
       // We need to acquire number value from string amount of products, because we get string value 
       // IDK why, but amount is an array, that's why we need to get the first and the only one value 
-      const amount = Number.parseInt(formData.amount[0])
+      const amount = Number.parseInt(formData.amount[0]);
 
       // Afterwards we multiply total price by the number of product ordered
       thisProduct.priceElem.innerHTML = total * amount;
