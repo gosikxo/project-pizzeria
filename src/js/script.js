@@ -93,7 +93,7 @@
       thisProduct.id = id;
       thisProduct.data = data;
       thisProduct.params = {};
-      console.log(data);
+      thisProduct.name = thisProduct.data.name;
 
       thisProduct.renderInMenu();
       thisProduct.getElements();
@@ -101,10 +101,6 @@
       thisProduct.initOrderForm();
       thisProduct.initAmountWidget();
       thisProduct.processOrder();
-
-
-
-      // console.log('new Product: ', thisProduct);
     }
 
     renderInMenu() {
@@ -167,6 +163,7 @@
 
     addToCart() {
       const thisProduct = this;
+      thisProduct.amount = thisProduct.amountWidget.value;
       app.cart.add(thisProduct);
     }
 
@@ -198,7 +195,7 @@
 
       // Object containing potential options 
       const data = thisProduct.data;
-      thisProduct.categories = {}
+      thisProduct.categories = {};
       // Default price
       const defaultPrice = thisProduct.data.price;
 
@@ -207,11 +204,11 @@
 
       // Option categories
       const categories = data.params;
-      console.log({categories, data, formData})
-
       for (const categoryName in categories) {
         // Options possible per category 
         const options = categories[categoryName].options;
+        const categoryLabel = categories[categoryName].label;
+
         // Options checked for specific category
         const checkedForCategory = formData[categoryName];
 
@@ -227,12 +224,12 @@
           if (optionChecked) {
             if (!thisProduct.params[categoryName]) {
               thisProduct.params[categoryName] = {
-                label: categories|
-                [categoryName].label,
+                label: categoryLabel,
                 options: {},
-              }
+              };
             }
             thisProduct.params[categoryName].options[optionName] = option.label;
+
             // if image wrapper was found 
             if (imageWrapper) {
               // then add class active to this image 
@@ -247,6 +244,8 @@
             if (imageWrapper) {
               imageWrapper.classList.remove(classNames.menuProduct.imageVisible);
             }
+            // remove unchecked params if they were previously checked
+            delete thisProduct.params[categoryName].options[optionName];
             // If option is not checked and it's default, then we decrase total price
             // Because total price is based on default value
             // Default value is containing default options in price
@@ -256,23 +255,13 @@
           }
         }
       }
-
-
-      // We need to acquire number value from string amount of products, because we get string value 
-      // IDK why, but amount is an array, that's why we need to get the first and the only one value 
-      //const amount = Number.parseInt(formData.amount[0]);
-
-      // Afterwards we multiply total price by the number of product ordered
-      //total *= thisProduct.amountWidget.value;
-      //thisProduct.priceElem.innerHTML = total; //* amount;
-      //console.log('Product price: ' + total);
+      
       /* multiply price by amount */
       thisProduct.priceSingle = total;
       thisProduct.price = thisProduct.priceSingle * thisProduct.amountWidget.value;
       /* set the contents of thisProduct.priceElem to be the value of variable price */
       thisProduct.priceElem.innerHTML = thisProduct.price;
 
-      console.log(this.params)
     }
   }
   class AmountWidget {
@@ -282,9 +271,8 @@
       thisWidget.value = settings.amountWidget.defaultValue;
       thisWidget.setValue(thisWidget.input.value);
       thisWidget.initActions();
-      //console.log('AmountWidget: ', thisWidget);
-      //console.log('constructor arguments: ', element);
     }
+
     getElements(element) {
       const thisWidget = this;
       thisWidget.element = element;
@@ -292,18 +280,21 @@
       thisWidget.linkDecrease = thisWidget.element.querySelector(select.widgets.amount.linkDecrease);
       thisWidget.linkIncrease = thisWidget.element.querySelector(select.widgets.amount.linkIncrease);
     }
+
     setValue(value) {
       const thisWidget = this;
       const newValue = parseInt(value);
-      /*To do: ADD validation*/
+
       if (newValue !== thisWidget.value &&
         newValue >= settings.amountWidget.defaultMin &&
         newValue <= settings.amountWidget.defaultMax) {
         thisWidget.value = newValue;
         thisWidget.announce();
       }
+
       thisWidget.input.value = thisWidget.value;
     }
+
     initActions() {
       const thisWidget = this;
       thisWidget.input.addEventListener('change', function () {
@@ -318,6 +309,7 @@
         thisWidget.setValue(thisWidget.value + 1);
       });
     }
+
     announce() {
       const thisWidget = this;
       const event = new Event('updated');
@@ -330,23 +322,28 @@
       thisCart.products = [];
       thisCart.getElements(element);
       thisCart.initActions();
-      console.log('new Cart ', thisCart);
     }
+
     getElements(element) {
       const thisCart = this;
       thisCart.dom = {};
       thisCart.dom.wrapper = element;
       thisCart.dom.toggleTrigger = thisCart.dom.wrapper.querySelector(select.cart.toggleTrigger);
+      thisCart.dom.productList = thisCart.dom.wrapper.querySelector(select.cart.productList);
     }
+
     initActions() {
       const thisCart = this;
       thisCart.dom.wrapper.addEventListener('click', function () {
         thisCart.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
       });
     }
-    add(menuProduct) {
-      // const thisCart =this;
-      console.log('adding product ', menuProduct);
+
+    add(product) {
+      const thisCart = this;
+      const generatedHTML = templates.cartProduct(product);
+      const generatedDOM = utils.createDOMFromHTML(generatedHTML);
+      thisCart.dom.productList.appendChild(generatedDOM);
     }
   }
   const app = {
@@ -354,30 +351,29 @@
       const thisApp = this;
       thisApp.data = dataSource;
     },
+
     initMenu: function () {
       const thisApp = this;
-      //console.log('thisApp.data: ', thisApp.data);
+      
       for (let productData in thisApp.data.products) {
         new Product(productData, thisApp.data.products[productData]);
       }
     },
+
     initCart: function () {
       const thisApp = this;
       const cartElem = document.querySelector(select.containerOf.cart);
       thisApp.cart = new Cart(cartElem);
     },
+
     init: function () {
       const thisApp = this;
-      //console.log('*** App starting ***');
-      //console.log('thisApp:', thisApp);
-      //console.log('classNames:', classNames);
-      //console.log('settings:', settings);
-      //console.log('templates:', templates);
       thisApp.initData();
       thisApp.initMenu();
       thisApp.initCart();
     },
-  }
+  };
+
   app.init();
 }
 
