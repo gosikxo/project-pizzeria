@@ -348,7 +348,7 @@
       });
       thisCart.dom.productList.addEventListener('updated', function() {
         thisCart.update();
-      })
+      });
     }
 
     update() {
