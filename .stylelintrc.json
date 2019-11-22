@@ -31,7 +31,7 @@
             }
         ],
         "unit-whitelist": null,
-        "scss/at-extend-no-missing-placeholder": true,
+       
         "scss/selector-no-redundant-nesting-selector": true,
         "scss/no-duplicate-dollar-variables": true
     }
