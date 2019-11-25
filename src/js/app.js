@@ -20,10 +20,10 @@ const app = {
       });
 
       // If no pages match provided hash we get the first one on default
-      thisApp.activatePage(pagesMatchingHash.length ? pagesMatchingHash[0].id : thisApp.pages.id[0]);
+      thisApp.activatePage(pagesMatchingHash.length ? pagesMatchingHash[0].id : thisApp.pages[0].id);
     } else {
       // If there's no hash then render first page (which is "order page")
-      thisApp.activatePage(thisApp.pages.id[0]);
+      thisApp.activatePage(thisApp.pages[0].id);
     }
 
     for (let link of thisApp.navLinks) {
