@@ -2,19 +2,25 @@
 export class BaseWidget {
   constructor(wrapperElement, initialValue) {
     const thisWidget = this;
+    thisWidget.dom = {};
     thisWidget.dom.wrapper = wrapperElement;
     thisWidget.correctValue = initialValue;
   }
+
+  // string -> number
   parseValue(newValue) {
     return parseInt(newValue);
   }
+
   isValid(newValue) {
     return !isNaN(newValue);
   }
+
   renderValue() {
     const thisWidget = this;
     console.log('widget value: ', thisWidget.value);
   }
+
   announce() {
     const thisWidget = this;
     const event = new CustomEvent('updated', {
@@ -22,11 +28,13 @@ export class BaseWidget {
     });
     thisWidget.dom.wrapper.dispatchEvent(event);
   }
+
   get value() {
     const thisWidget = this;
 
     return thisWidget.correctValue;
   }
+
   set value(assignedValue) {
     const thisWidget = this;
     const newValue = thisWidget.parseValue(assignedValue);
