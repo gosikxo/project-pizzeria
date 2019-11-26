@@ -1,5 +1,6 @@
 import { settings, select } from '../settings.js';
-export class AmountWidget {
+import { BaseWidget } from './BaseWidget.js';
+export class AmountWidget extends BaseWidget{
   constructor(element) {
     const thisWidget = this;
     thisWidget.getElements(element);
@@ -48,11 +49,4 @@ export class AmountWidget {
     });
   }
 
-  announce() {
-    const thisWidget = this;
-    const event = new CustomEvent('updated', {
-      bubbles: true
-    });
-    thisWidget.element.dispatchEvent(event);
-  }
 }
