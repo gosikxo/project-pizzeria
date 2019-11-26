@@ -63,6 +63,10 @@ utils.dateToStr = function(dateObj){
   return dateObj.toISOString().slice(0, 10);
 };
 
+utils.now = function() {
+  return utils.dateToStr(new Date());
+};
+
 utils.addDays = function(dateStr, days){
   const dateObj = new Date(dateStr);
   dateObj.setDate(dateObj.getDate() + days);
