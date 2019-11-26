@@ -28,6 +28,7 @@ export class DatePicker extends BaseWidget {
     thisWidget.plugin = window.flatpickr(thisWidget.dom.input, {
       minDate: thisWidget.minDate,
       maxDate: thisWidget.maxDate,
+      defaultDate: thisWidget.minDate,
       locale: {
         firstDayOfWeek: 1 // start week on Monday
       },

@@ -1,6 +1,6 @@
 import { templates } from '../settings.js';
 import { utils } from '../utils.js';
-import { select, settings } from '../settings.js';
+import { select, settings, classNames } from '../settings.js';
 import { AmountWidget } from './AmountWidget.js';
 import { DatePicker } from './DatePicker.js';
 import { HourPicker } from './HourPicker.js';
@@ -33,6 +33,8 @@ export class Booking {
     thisBooking.dom.hoursAmount = thisBooking.dom.wrapper.querySelector(select.booking.hoursAmount);
     thisBooking.dom.datePicker = thisBooking.dom.wrapper.querySelector(select.widgets.datePicker.wrapper);
     thisBooking.dom.hourPicker = thisBooking.dom.wrapper.querySelector(select.widgets.hourPicker.wrapper);
+
+    thisBooking.dom.tables = thisBooking.dom.wrapper.querySelectorAll(select.booking.tables);
   }
 
   initWidgets() {
@@ -43,6 +45,10 @@ export class Booking {
     thisBooking.hoursAmount = new AmountWidget(thisBooking.dom.hoursAmount);
     thisBooking.datePicker = new DatePicker(thisBooking.dom.datePicker);
     thisBooking.hourPicker = new HourPicker(thisBooking.dom.hourPicker);
+
+    thisBooking.dom.wrapper.addEventListener('updated', function() {
+      thisBooking.updateDOM();
+    });
   }
   getData(){
     const thisBooking = this;
@@ -114,6 +120,7 @@ export class Booking {
         }
       }
     }
+    thisBooking.updateDOM();
   }
 
 
@@ -137,6 +144,27 @@ export class Booking {
       } else {
         // IF there's no record, then initialize array
         thisBooking.booked[date][currentTime] = [table];
+      }
+    }
+  }
+
+  updateDOM() {
+    const thisBooking = this;
+
+    thisBooking.date = thisBooking.datePicker.value;
+    thisBooking.hour = utils.hourToNumber(thisBooking.hourPicker.correctValue);
+
+    for(let table of thisBooking.dom.tables){
+      const tableID = parseInt(table.getAttribute(settings.booking.tableIdAttribute));
+      const reservationsToday = thisBooking.booked[thisBooking.date];
+      // && returns last element in expression or false if expression equals false
+      const tablesReservedThisHour = reservationsToday && reservationsToday[thisBooking.hour];
+      const isReservedForThisHour =  tablesReservedThisHour && tablesReservedThisHour.includes(tableID);
+
+      if(isReservedForThisHour) {
+        table.classList.add(classNames.booking.tableBooked);
+      } else{ 
+        table.classList.remove(classNames.booking.tableBooked);
       }
     }
   }
