@@ -30,7 +30,7 @@ export class Cart {
   initActions() {
     const thisCart = this;
 
-    thisCart.dom.wrapper.addEventListener('click', function () {
+    thisCart.dom.toggleTrigger.addEventListener('click', function () {
       thisCart.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
     });
 

@@ -3,7 +3,7 @@
   width: 300px; // CODE CHANGED
   right: 0;
   top: $base-size;
-  padding: ($base-size) ($base-size * 1.5);
+  padding: 0;
   background: $color-light;
   border-radius: $radius;
   color: $color-main;
@@ -14,7 +14,7 @@
   &.active {
     .cart__content {
       @include accordion-open();
-      padding: ($base-size * 1.5) 0 0 0;
+      padding: ($base-size * 1.5) ($base-size * 1.5) ($base-size) ($base-size * 1.5);
     }
 
   }
@@ -23,6 +23,7 @@
     @include flex(row, center, space-between);
     text-transform: uppercase;
     cursor: pointer;
+    padding: ($base-size) ($base-size * 1.5);
   }
 
   &__icon {
@@ -48,6 +49,13 @@
     opacity: 0;
     animation: flipdown 0.5s ease both;
     color: $color-dark;
+    padding: 0;
+  }
+
+  &.active {
+    .cart__dropdown-icon {
+      transform: rotate(180deg);
+    }
   }
 
   &__order-summary {
