@@ -72,6 +72,11 @@ utils.addDays = function(dateStr, days){
   dateObj.setDate(dateObj.getDate() + days);
   return dateObj;
 };
+
+utils.replaceDOMElement = function(newElement, oldElement) {
+  oldElement.parentNode.replaceChild(newElement, oldElement);
+};
+
 Handlebars.registerHelper('ifEquals', function (arg1, arg2, options) {
   return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
 });

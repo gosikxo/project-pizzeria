@@ -46,6 +46,12 @@
     animation: flipdown 0.5s ease both;
   }
 
+  &.ignore-animation { 
+    .product__wrapper {
+      animation: none;
+    }
+  }
+
   &__params {
     margin: 0 0 ($base-size * 3) 0;
     padding: 0;

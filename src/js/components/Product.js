@@ -77,6 +77,33 @@ export class Product {
     });
   }
 
+  resetState() {
+    const thisProduct = this;
+
+    // reset params
+    thisProduct.params = {};
+    
+    // we need to create new DOM element so we will have initial state back again 
+    const generatedHTML = templates.menuProduct(thisProduct.data);
+    const domElement = utils.createDOMFromHTML(generatedHTML);
+    // we assume that if someone added product to cart, the product was active 
+    // otherwise no one could click "Add to cart"
+    domElement.classList.toggle('active');
+    // we want to do not run the animation after product DOM element replacement
+    domElement.classList.toggle('ignore-animation');
+    // finally we replace the old DOM element with the new one
+    utils.replaceDOMElement(domElement, thisProduct.element);
+    // we also want to remember the reference to the new element,
+    // so we can do the same operation in the future
+    thisProduct.element = domElement;
+
+    thisProduct.getElements();
+    thisProduct.initAccordion();
+    thisProduct.initOrderForm();
+    thisProduct.initAmountWidget();
+    thisProduct.processOrder();
+  }
+
   addToCart() {
     const thisProduct = this;
     thisProduct.amount = thisProduct.amountWidget.value;
@@ -87,6 +114,7 @@ export class Product {
       }
     });
     thisProduct.element.dispatchEvent(event);
+    thisProduct.resetState();
   }
 
   initOrderForm() {
