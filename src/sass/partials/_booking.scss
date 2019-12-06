@@ -1,4 +1,6 @@
 #pages {
+  padding-top: $header-height;
+  
   > * {
     display: none;
   }
