@@ -44,8 +44,17 @@ export class Cart {
     thisCart.dom.form.addEventListener('submit', function () {
       event.preventDefault();
       thisCart.sendOrder();
+      thisCart.resetState();
     });
   }
+  
+  resetState() {
+    const thisCart = this;
+    for (let product of thisCart.products) {
+      thisCart.remove(product);
+    }
+  }
+
   sendOrder() {
     const thisCart = this;
     const url = settings.db.url + '/' + settings.db.order;
@@ -60,8 +69,6 @@ export class Cart {
       products: [],
     };
 
-
-    console.log(payload);
     for (let product of thisCart.products) {
       payload.products.push(product.getData());
     }
