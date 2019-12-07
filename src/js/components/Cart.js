@@ -103,6 +103,8 @@ export class Cart {
       thisCart.subtotalPrice += product.price;
       thisCart.totalNumber += product.amount;
     }
+    const isCartEmpty = thisCart.products.length === 0;
+    thisCart.deliveryFee = isCartEmpty ? 0 : settings.cart.defaultDeliveryFee;
     thisCart.totalPrice = thisCart.subtotalPrice + thisCart.deliveryFee;
 
 
