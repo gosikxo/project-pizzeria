@@ -102,20 +102,21 @@ export class Booking {
       thisBooking.makeBooked(event.date, event.duration, event.hour, event.table);
     }
 
-
     // Generate repeated booking for booking record
     for (let daysToAdd = 0; daysToAdd < settings.datePicker.maxDaysInFuture; daysToAdd++) {
       // Get current date and add specific number of days
       const date = utils.addDays(utils.now(), daysToAdd);
-
+      
       // Get properly formatted date 
       const dateString = utils.dateToStr(date);
 
       for (let event of eventsRepeat) {
+        const hasEventStarted = date > new Date(event.date);
         // For every day we want to generate normal booking record 
         // As for eventsCurrent and bookings
         // But with generated date
-        if(event.repeat){
+        // Also we want to check if event had already started
+        if(event.repeat && hasEventStarted){
           thisBooking.makeBooked(dateString, event.duration, event.hour, event.table);
         }
       }
