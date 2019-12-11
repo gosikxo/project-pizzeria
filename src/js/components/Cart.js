@@ -43,44 +43,54 @@ export class Cart {
     });
     thisCart.dom.form.addEventListener('submit', function () {
       event.preventDefault();
+      const phoneNumber = thisCart.dom.phone.value;
+      const address = thisCart.dom.address.value;
+      const isAddressValid = thisCart.validateAddress(address);
+      const isPhoneValid = thisCart.validatePhone(phoneNumber);
+      const areInputsValid = isAddressValid && isPhoneValid;
+
       if(thisCart.products.length === 0) {
         window.alert('Your cart is empty. Please add something to the cart before sending an order.');
       } else {
-        thisCart.sendOrder();
-        thisCart.resetState();
+        if(!areInputsValid) {
+          window.alert('Please input phone number and address correct.');
+        } else { 
+          thisCart.sendOrder();
+          thisCart.resetState();
+        }
       }
     });
 
     thisCart.dom.address.addEventListener('change', function (event) {
-      thisCart.validateAddress(event);
+      thisCart.validateAddress(event.target.value);
     });
     thisCart.dom.phone.addEventListener('change', function (event) { 
-      thisCart.validatePhone(event);
+      thisCart.validatePhone(event.target.value);
     });
     
   }
 
-  validatePhone(event) {
+  validatePhone(phoneNumber) {
     const thisCart = this;
-    // event.target <- something that event was triggered on 
-    const phoneNumber = event.target.value; 
-    thisCart.dom.phone.classList.add('error');
 
     if(phoneNumber.length>=9) {
       thisCart.dom.phone.classList.remove('error');
+      return true;
     } else {
       thisCart.dom.phone.classList.add('error');
+      return false;
     }
   }
 
-  validateAddress(event) {
+  validateAddress(address) {
     const thisCart = this;
-    const address = event.target.value;
 
     if(address.length >= 3) {
       thisCart.dom.address.classList.remove('error');
+      return true;
     } else {
       thisCart.dom.address.classList.add('error');
+      return false;
     }
   }
   

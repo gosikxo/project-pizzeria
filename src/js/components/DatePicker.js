@@ -42,6 +42,10 @@ export class DatePicker extends BaseWidget {
     });
     thisWidget.plugin.config.onChange.push(function dateHasChanged(_selectedDates, dateStr) {
       thisWidget.value = dateStr;
+      const event = new CustomEvent('date_updated', {
+        bubbles: true
+      });
+      thisWidget.dom.input.dispatchEvent(event);
     });
   }
 }

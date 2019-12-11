@@ -36,6 +36,10 @@ export class HourPicker extends BaseWidget {
     window.rangeSlider.create(thisWidget.dom.input);
     thisWidget.dom.input.addEventListener('input', function() {
       thisWidget.syncValue();
+      const event = new CustomEvent('hour_updated', {
+        bubbles: true
+      });
+      thisWidget.dom.input.dispatchEvent(event);
     });
   }
 }
