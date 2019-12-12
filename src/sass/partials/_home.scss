@@ -1,0 +1,72 @@
+.main-container {
+  margin: 41px auto 0 auto;
+  max-width: 700px;
+  padding: 72px 48px;
+  background-color: white;
+  border-radius: $border-radius;
+}
+
+.options-hours {
+  text-align: center;
+  color: white;
+
+  .overlay {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    @include flex-center();
+    
+    span {
+      text-transform: uppercase;
+    }
+  }
+  
+  .options {
+    display: flex;
+    max-height: $option-height;
+
+    &-title { 
+      font-size: 26px;
+      font-family: $font-header;
+      font-weight: $font-semibold;
+      text-transform: uppercase;
+    }
+
+    img {
+      border-radius: $border-radius;
+      @include fluid-img();
+    }
+
+    span {
+      position: absolute;
+    }
+
+    &-card:first-of-type {
+      margin-right: 5px;
+    }
+
+    &-card {
+      text-decoration: none;
+      position: relative;
+      color: white;
+    }
+  }
+
+  .opening-hours {
+    margin-top: 6px;
+    height: $option-height;
+    background-color: $color-main;
+    border-radius: $border-radius;
+    position: relative;
+    @include flex-center();
+    
+    h2, h3 {
+      margin: 0;
+    }
+
+    h3 {
+      font-weight: $font-light;
+      font-size: 14px;
+    }
+  }
+}

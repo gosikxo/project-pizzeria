@@ -7,41 +7,46 @@ const app = {
   initPages() {
     const thisApp = this;
     thisApp.pages = Array.from(document.querySelector(select.containerOf.pages).children);
-    thisApp.navLinks = Array.from(document.querySelectorAll(select.nav.links));
+    thisApp.homePage = document.querySelector(select.containerOf.home);
+
+    window.addEventListener('hashchange', function() {
+      thisApp.checkCurrentPage();
+    });
+    thisApp.checkCurrentPage();
+  },
+  checkCurrentPage() {
+    const thisApp = this;
+
     let pagesMatchingHash = [];
 
     if(window.location.hash.length > 2) {
       // Get id from hashed ID "#/booking" -> "booking"
       const idFromHash = window.location.hash.replace('#/', '');
-      
+  
       // Find pages matching id gathered from hash 
       pagesMatchingHash = thisApp.pages.filter(function(page) {
         return page.id == idFromHash;
       });
 
       // If no pages match provided hash we get the first one on default
-      thisApp.activatePage(pagesMatchingHash.length ? pagesMatchingHash[0].id : thisApp.pages[0].id);
+      thisApp.activatePage(pagesMatchingHash.length ? pagesMatchingHash[0].id : thisApp.homePage.id);
     } else {
       // If there's no hash then render first page (which is "order page")
-      thisApp.activatePage(thisApp.pages[0].id);
-    }
-
-    for (let link of thisApp.navLinks) {
-      link.addEventListener('click', function () {
-        const clickedElement = this;
-        event.preventDefault();
-        /*get page id from href*/
-        const id = clickedElement.getAttribute('href').replace('#', '');
-        /*activate page*/
-        thisApp.activatePage(id);
-      });
+      thisApp.activatePage(thisApp.homePage.id);
     }
   },
   activatePage(pageId) {
     const thisApp = this;
-    for (let link of thisApp.navLinks) {
-      link.classList.toggle(classNames.nav.active, link.getAttribute('href') == '#' + pageId);
+    thisApp.cart = document.querySelector(select.containerOf.cart);
+
+    if(thisApp.homePage.id === pageId) {
+      // Hide cart
+      thisApp.cart.classList.remove(classNames.cart.visible);
+    } else { 
+      // Unhide cart
+      thisApp.cart.classList.add(classNames.cart.visible);
     }
+
     for (let page of thisApp.pages) {
       page.classList.toggle(classNames.nav.active, page.getAttribute('id') == pageId);
     }

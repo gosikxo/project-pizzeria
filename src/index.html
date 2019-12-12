@@ -1,29 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Pizzeria</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-  <link href="https://fonts.googleapis.com/css?family=Lato:400,300i,700%7COswald:300,500,700&amp;subset=latin-ext" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lato:400,300i,700%7COswald:300,500,700&amp;subset=latin-ext"
+    rel="stylesheet">
   <link href="/vendor/range-slider.min.css" rel="stylesheet">
   <link href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
   <header class="header">
     <div class="container">
       <div class="header__wrapper">
-        <div class="logo">
+        <a href="#/home" class="logo">
           <h1 class="logo__title"><span>Mamma</span>Mia!</h1>
           <h2 class="logo__subtitle">the best homemade Italian food</h2>
-        </div>
-        <div class="main-nav">
-          <a href="#order">Order</a>
-          <a href="#booking">Booking</a>
-        </div>
+        </a>
         <div id="cart" class="cart">
           <div class="cart__summary">
             <span class="cart__total-number">0</span>
@@ -62,6 +61,34 @@
   </header>
 
   <div id="pages">
+    <section id="home">
+      <div id="container" class="main-container">
+        <div id="inner-container" class="options-hours">
+          <div class="options">
+            <a class="options-card" href="/#/order">
+              <div class="overlay">
+                <span class="options-title">Order online</span>
+              </div>
+              <img src="/images/assets/pizza-1.jpg" rel="pizza" />
+            </a>
+            <a class="options-card" href="/#/booking">
+              <div class="overlay">
+                <span class="options-title">Book a table</span>
+              </div>
+              <img src="/images/assets/pizza-2.jpg" rel="pizza" />
+            </a>
+          </div>
+          <div class="opening-hours">
+            <div>
+                <h2 class="options-title">OPENING HOURS:</h2>
+                <h3>TUE-SUN, 12PM - 12AM</h3>
+            </div>
+          </div>
+        </div>
+        <div id="inner-container" class="carousel"></div>
+        <div id="inner-container" class="photos"></div>
+      </div>
+    </section>
     <section id="order">
       <div id="product-list" class="product-list container"></div>
     </section>
@@ -246,4 +273,5 @@
   <script src="/vendor/range-slider.min.js"></script>
   <script src="js/app.js" type="module"></script>
 </body>
+
 </html>

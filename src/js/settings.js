@@ -9,6 +9,7 @@ export const select = {
     menu: '#product-list',
     cart: '#cart',
     pages: '#pages',
+    home: '#home',
     booking: '.booking-wrapper',
   },
   all: {
@@ -82,6 +83,7 @@ export const classNames = {
   
   cart: {
     wrapperActive: 'active',
+    visible: 'visible',
   },
   booking: {
     loading: 'loading',
