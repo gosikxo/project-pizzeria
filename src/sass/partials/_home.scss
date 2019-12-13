@@ -15,17 +15,17 @@
     height: 100%;
     width: 100%;
     @include flex-center();
-    
+
     span {
       text-transform: uppercase;
     }
   }
-  
+
   .options {
     display: flex;
     max-height: $option-height;
 
-    &-title { 
+    &-title {
       font-size: 26px;
       font-family: $font-header;
       font-weight: $font-semibold;
@@ -59,8 +59,9 @@
     border-radius: $border-radius;
     position: relative;
     @include flex-center();
-    
-    h2, h3 {
+
+    h2,
+    h3 {
       margin: 0;
     }
 
@@ -68,5 +69,50 @@
       font-weight: $font-light;
       font-size: 14px;
     }
+  }
+}
+//CAROUSEL
+.carousel {
+  display: flex;
+  max-height: $option-height;
+  margin-top: 103px;
+  max-height: 200px;
+
+  img {
+    object-fit: cover;
+    height: 193px;
+    max-width: 193px;
+    flex: 1 0 0;
+    margin-right: 40px;
+  }
+
+  .text {
+    flex: 1 0 0;
+    padding-top: 6px;
+    font-weight: $font-normal;
+    //font-weight nie działa
+    h2 {
+      font-weight: $font-semibold;
+      text-transform: uppercase;
+      font-size: 14px;
+      margin-bottom: 0px;
+    }
+
+    .author {
+      font-style: italic;
+      margin-top: 23px;
+    }
+  }
+}
+//PHOTOS
+.photos {
+  display: flex;
+  flex-wrap: wrap;
+
+  img {
+    object-fit: cover;
+    height: 180px;
+    width: 180px;
+    margin: 20px;
   }
 }
