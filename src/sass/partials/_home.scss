@@ -128,7 +128,7 @@
     @include card();
   }
 
-  .photo-overlay { 
+  .photo-overlay {
     display: none;
     position: absolute;
     top: 0;
@@ -139,30 +139,30 @@
 
     .fas {
       font-size: 22px;
+      color: white;
+    }
+
+    .fas:hover {
+      color: $color-main;
     }
 
     .fa-heart {
-      color: $color-heart;
       margin-right: 14px;
-    }
-
-    .fa-share-alt {
-      color: white;
     }
   }
 
-  .photo:hover { 
+  .photo:hover {
     img {
       filter: brightness(0.5);
     }
-    
-    .photo-overlay { 
+
+    .photo-overlay {
       display: flex;
       @include flex-center();
     }
   }
 
   p a {
-    color: $color-heart;
+    color: $color-main;
   }
 }
