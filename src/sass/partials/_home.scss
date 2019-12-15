@@ -1,3 +1,11 @@
+@mixin card {
+  $size: 193px;
+  object-fit: cover;
+  height: $size;
+  width: $size;
+  border-radius: $border-radius;
+}
+
 .main-container {
   margin: 41px auto 0 auto;
   max-width: 700px;
@@ -77,12 +85,10 @@
   max-height: $option-height;
   margin-top: 103px;
   max-height: 200px;
+  margin-bottom: 120px;
 
   img {
-    object-fit: cover;
-    height: 193px;
-    max-width: 193px;
-    flex: 1 0 0;
+    @include card();
     margin-right: 40px;
   }
 
@@ -90,7 +96,7 @@
     flex: 1 0 0;
     padding-top: 6px;
     font-weight: $font-normal;
-    //font-weight nie działa
+    // FIXME: font-weight is not working
     h2 {
       font-weight: $font-semibold;
       text-transform: uppercase;
@@ -109,10 +115,54 @@
   display: flex;
   flex-wrap: wrap;
 
+  .photo {
+    margin: 3px 0;
+    position: relative;
+  }
+
+  .photo:nth-child(2) {
+    margin: 3px 12px;
+  }
+
   img {
-    object-fit: cover;
-    height: 180px;
-    width: 180px;
-    margin: 20px;
+    @include card();
+  }
+
+  .photo-overlay { 
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+
+    .fas {
+      font-size: 22px;
+    }
+
+    .fa-heart {
+      color: $color-heart;
+      margin-right: 14px;
+    }
+
+    .fa-share-alt {
+      color: white;
+    }
+  }
+
+  .photo:hover { 
+    img {
+      filter: brightness(0.5);
+    }
+    
+    .photo-overlay { 
+      display: flex;
+      @include flex-center();
+    }
+  }
+
+  p a {
+    color: $color-heart;
   }
 }
