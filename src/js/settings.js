@@ -11,6 +11,11 @@ export const select = {
     pages: '#pages',
     home: '#home',
     booking: '.booking-wrapper',
+    carousel: '.carousel',
+  },
+  carousel: {
+    item: '.carousel .carousel-slide',
+    selectors: '.carousel .carousel-selectors',
   },
   all: {
     menuProducts: '#product-list > .product',
@@ -84,6 +89,9 @@ export const classNames = {
   cart: {
     wrapperActive: 'active',
     visible: 'visible',
+  },
+  carousel: {
+    buttonActive: 'active',
   },
   booking: {
     loading: 'loading',

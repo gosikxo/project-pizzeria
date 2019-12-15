@@ -98,11 +98,53 @@
 
 //CAROUSEL
 .carousel {
-  display: flex;
-  max-height: $option-height;
   margin-top: 103px;
-  max-height: 200px;
-  margin-bottom: 120px;
+  margin-bottom: 60px;
+  position: relative;
+  height: 260px;
+  overflow: hidden;
+
+  &-selectors { 
+    @include flex-center();
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+
+    button {
+      padding: 0;
+      outline: 0;
+      cursor: pointer;
+      
+      margin: 8px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+
+      border: none;
+      background-color: lightgrey;
+    }
+
+    button.active {
+      background-color: black;
+    }
+  }
+
+  &-slide { 
+    transition: transform 1s;
+    position: absolute;
+    height: 200px;
+    display: none;
+  }
+
+  &-slide:first-of-type { 
+    display: flex;
+  }
+
+  &.initialized {
+    .carousel-slide { 
+      display: flex;
+    }
+  }
 
   img {
     @include card();
@@ -112,8 +154,8 @@
   .text {
     flex: 1 0 0;
     padding-top: 6px;
-    font-weight: $font-normal;
-    // FIXME: font-weight is not working
+    font-weight: $font-light;
+
     h2 {
       font-weight: $font-semibold;
       text-transform: uppercase;
@@ -124,6 +166,7 @@
     .author {
       font-style: italic;
       margin-top: 23px;
+      letter-spacing: -0.5px;
     }
   }
 }

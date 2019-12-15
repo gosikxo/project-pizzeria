@@ -3,6 +3,8 @@ import { Product } from './components/Product.js';
 import { Cart } from './components/Cart.js';
 import { select, settings, classNames } from './settings.js';
 import { Booking } from './components/Booking.js';
+import { Carousel } from './components/Carousel.js';
+
 const app = {
   initPages() {
     const thisApp = this;
@@ -91,12 +93,19 @@ const app = {
     });
   },
 
+  initCarousel: function () {
+    const thisApp = this;
+    const carouselElement = document.querySelector(select.containerOf.carousel);  
+    thisApp.carousel = new Carousel(carouselElement);
+  },
+
   init: function () {
     const thisApp = this;
     thisApp.initPages();
     thisApp.initData();
     thisApp.initCart();
     thisApp.initBooking();
+    thisApp.initCarousel();
   },
 };
 
