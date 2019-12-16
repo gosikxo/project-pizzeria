@@ -53,12 +53,13 @@ export class Booking {
     thisBooking.hourPicker = new HourPicker(thisBooking.dom.hourPicker);
 
     thisBooking.dom.wrapper.addEventListener('updated', function() {
-      thisBooking.updateDOM();
+      thisBooking.updateDOM();      
     });
 
     thisBooking.dom.wrapper.addEventListener('date_updated', function() {
       thisBooking.selectedTable = undefined;
       thisBooking.updateDOM();
+      thisBooking.updateHourPicker();
     });
 
     thisBooking.dom.wrapper.addEventListener('hour_updated', function() {
@@ -170,6 +171,7 @@ export class Booking {
       }
     }
     thisBooking.updateDOM();
+    thisBooking.updateHourPicker();
   }
 
 
@@ -215,13 +217,41 @@ export class Booking {
     return parseInt(table.getAttribute(settings.booking.tableIdAttribute));
   }
 
-  isTableReservedForHour(table) {
+  isTableReservedForHour(table, hour) {
     const thisBooking = this;
     const tableID = thisBooking.getTableID(table);
     const reservationsToday = thisBooking.booked[thisBooking.date];
+    const chosenHour = hour || thisBooking.hour;
     // && returns last element in expression or false if expression equals false
-    const tablesReservedThisHour = reservationsToday && reservationsToday[thisBooking.hour];
+    const tablesReservedThisHour = reservationsToday && reservationsToday[chosenHour];
     return tablesReservedThisHour && tablesReservedThisHour.includes(tableID);
+  }
+
+  getReservationsColors(){
+    const thisBooking = this;
+    const colorsPerHalfHour = [];
+
+    for (let hour=12; hour<24; hour+=0.5) {
+      let tablesReserved = 0;
+
+      for(let table of thisBooking.dom.tables){
+        if(thisBooking.isTableReservedForHour(table, hour)){
+          tablesReserved += 1;
+        }
+      }
+
+      if(tablesReserved === 0) {
+        colorsPerHalfHour.push('green');
+      } else { 
+        if(tablesReserved === thisBooking.dom.tables.length) {
+          colorsPerHalfHour.push('red');
+        } else {
+          colorsPerHalfHour.push('orange');
+        }
+      }
+    }
+    
+    return colorsPerHalfHour;
   }
 
   validatePhone(phoneNumber) {
@@ -269,6 +299,12 @@ export class Booking {
     }
   }
 
+  updateHourPicker() {
+    const thisBooking = this;
+    const colors = thisBooking.getReservationsColors();
+    thisBooking.hourPicker.setColors(colors);
+  }
+
   resetState() {
     const thisBooking = this;
     thisBooking.dom.phone.value = '';
@@ -292,7 +328,7 @@ export class Booking {
       phone: thisBooking.dom.phone.value,
       address: thisBooking.dom.address.value,
     };
-
+   
     const options = {
       method: 'POST',
       headers: {

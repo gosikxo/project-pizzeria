@@ -56,6 +56,29 @@
     position: absolute;
     right: 0;
   }
+
+  .color-ranges {
+    display: flex;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 10px;
+  }
+
+  .color-range {
+    flex: 1;
+
+    &.red {
+      background-color: red;
+    }
+
+    &.orange {
+      background-color: orange;
+    }
+
+    &.green {
+      background-color: green;
+    }
+  }
 }
 
 .rangeSlider {
